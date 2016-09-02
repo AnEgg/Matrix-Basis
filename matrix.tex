@@ -1,6 +1,10 @@
 \documentclass[UTF8]{article}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[]{caption2} 
+\renewcommand{\figurename}{图}
+\renewcommand{\captionlabeldelim}{.}
 \usepackage{ctex}
 \usepackage{geometry}
 \geometry{left=2.7cm,right=2.7cm,top=2.5cm,bottom=2.5cm}
@@ -103,7 +107,7 @@ $$
 *&*& & & \\
 *&*& \ddots &  \\
 *&*& \ddots & * & \\
-*&*& \cdots & * &*\\
+*&*& \cdots & * &*
 \end{bmatrix}
 $$
 
@@ -313,5 +317,22 @@ V^*，
 $
 \end{center}
 其中$\Sigma = diag(\sigma_1,\sigma_2,\cdots,\sigma_n)\in \mathbb{R}^{n \times n}$，且$\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_n \geq 0$。上述分解称为$A$的奇异值分解，而$\sigma_1,\sigma_2,\cdots,\sigma_n$则称为$A$的奇异值。
+
+\paragraph{\textcolor[rgb]{0.00,0.07,1.00}{线性最小二乘求解方法}}
+\subparagraph{正规方程法}
+设$A\in\mathbb{R}^{n \times n}(m \geq n)$。则$x_*\in\mathbb{R}^n$是线性最小二乘问题的解当且仅当残量$r=b-Ax_*$与$Ran(A)$（值域）正交，即$x_*$是下面的\textcolor[rgb]{0.00,0.07,1.00}{正规方程}的解
+\begin{center}
+$A^T(b-Ax)=0$或$A^TAx=A^Tb.$
+\end{center}
+\subparagraph{QR分解方法}
+由于$Q$的列向量组成$Ran(A)$的一组标准正交基，因为$QQ^T$是$Ran(A)$的正交投影算子，根据最小二乘解的几何含义有
+$$Ax_*=QQ^Tb,$$
+即$QRx_*=QQ^Tb$，由此可知$x_*=R^{-1}Q^{T}b$。
+\begin{figure}[!hbt]
+  \centering
+  \includegraphics[width=13cm]{images/LSM.eps}\\
+  \caption{最小二乘解的几何含义}\label{图:LSM}
+\end{figure}
+
 \end{flushleft}
 \end{document}
