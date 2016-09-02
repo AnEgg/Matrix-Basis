@@ -1,3 +1,3 @@
 # It is just some notes about basic knowledge of matrix and Latax exercise.
 
-<img src="http://www.forkosh.com/mathtex.cgi?\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}">
+<img style="-webkit-user-select: none" src="http://www.forkosh.com/mathtex.cgi?formdata=%5CLarge+A%3DU%5CSigma+V%5E*">
