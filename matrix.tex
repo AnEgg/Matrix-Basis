@@ -562,5 +562,81 @@ $$x=y_1v_1+y_2v_2+\cdots+y_mv_m=V_my$$
   \item 寻找一组适合的基$v_1,v_2,\cdots,v_m$
   \item 求出$x^{(m)}$在这组基下的线性标出系数$y^{(m)}$
 \end{enumerate}
+
+\subparagraph{Arnoldi过程}
+首先考虑基的选取，由于$r,Ar,A^2r,\cdots,A^{m-1}r$线性无关，因此它们可以作为$\mathcal{K}_m$的一组基。但为保证算法稳定性，需要对$\{ r,Ar,A^2r,\cdots,A^{m-1}r \}$进行Schmidt正交。这个过程称为\textcolor[rgb]{0.00,0.07,1.00}{Arnoldi过程}。
+
+\begin{algorithm}[H]
+\caption{Arnoldi过程（MGS）}
+\begin{algorithmic}[1]
+  \State $v_1=r/\Arrowvert r \Arrowvert _2$
+  \State for $j=1$ to $m$ do
+  \State \qquad $z=Av_j$
+  \State \qquad for $i=1$ to $j$ do
+  \State \qquad \qquad $h_{i,j}=(v_i,z)$
+  \State \qquad \qquad $z=z-h_{i,j}v_i$
+  \State \qquad end for
+  \State \qquad $h_{j+1,j}=\Arrowvert z \Arrowvert _2$
+  \State \qquad if $h_{j+1,j}=0$ then
+  \State \qquad \qquad break
+  \State \qquad end if
+  \State \qquad $v_{j+1}=z/h_{j+1,j}$
+  \State end for
+\end{algorithmic}
+\end{algorithm}
+
+\subparagraph{Lanczos过程}
+Lanczos过程是Arnoldi过程在$A$是对称矩阵的简化形式
+\begin{algorithm}[H]
+\caption{Lanczos过程}
+\begin{algorithmic}[1]
+  \State Set $s_0=0$ and $\beta _0=0$
+  \State $v_1=r/\Arrowvert r \Arrowvert _2$
+  \State for $j=1$ to $m$ do
+  \State \qquad $z=Av_j$
+  \State \qquad $a_i=(v_j,z)$
+  \State \qquad $z=z-a_jv_j-\beta _{j-1}v_{j-1}$
+  \State \qquad $\beta _j=\Arrowvert z \Arrowvert _2$
+  \State \qquad if $\beta _j=0$ then
+  \State \qquad \qquad break
+  \State \qquad end if
+  \State \qquad $v_{j+1}=z/\beta _j$
+  \State end for
+\end{algorithmic}
+\end{algorithm}
+
+\end{flushleft}
+
+\section{特征值的迭代解}
+\begin{flushleft}
+当矩阵规模很大时，计算其所有特征值和特征向量是非常困难的。而事实上，\textcolor[rgb]{0.00,0.07,1.00}{只有某些特征值和特征向量令人感兴趣}，并没有必要计算所有的特征值和特征向量。
+
+\paragraph{投影算法}
+最简单的特征值问题就是仅仅计算一个特征值，如计算模最大的特征值。这是可以使用幂迭代算法。
+\begin{algorithm}[H]
+\caption{幂迭代：计算最大特征值}
+\begin{algorithmic}[1]
+  \State Given $x^{(0)}$
+  \State for $i=1,2,\cdots,$until converge do
+  \State \qquad $y^{(i)}=Ax^{(i-1)}$
+  \State \qquad $x^{(i)}=y^{(i)}/\Arrowvert y^{(i)} \Arrowvert _2$
+  \State end for
+\end{algorithmic}
+\end{algorithm}
+幂迭代所产生的迭代向量$x^{(0)},x^{(1)},\cdots,x^{(m-1)}$生成一个Krylov子空间
+$$\mathcal{K}_m(A,x^{(0)})=span\{x^{(0)},Ax^{(0)},\cdots,A^{m-1}x^{(0)}\}.$$
+在幂迭代中，取$x^{(m-1)}$为近似特征向量。
+
+\paragraph{Rayleigh-Ritz算法}
+如果在$\mathcal{K}_m(A,x^{(0)})$中找出$m$个最佳近似特征向量及相应的最近近似特征值。这些近似特征值和近似特征向量就是\textcolor[rgb]{0.00,0.07,1.00}{Ritz值}和\textcolor[rgb]{0.00,0.07,1.00}{Ritz向量}。
+
+\paragraph{Lanczos算法}
+设$A\in\mathbb{R}^{n \times n}$是对称矩阵。Lanczos就是利用Lanczos算法来计算$\mathcal{K}_m$的基和$T_m=V_m^TAV_m$，然后计算$A$的Ritz值和Ritz向量。
+
+\paragraph{Arnoldi算法}
+与Lanczos算法的思想相类似，可以使用Arnoldi算法。
+
+\paragraph{非对称Lanczos算法}
+非对称Lanczos算法就是Lanczos算法在非对称矩阵上的推广，它是基于Lanczos双正交化过程。
 \end{flushleft}
 \end{document}
